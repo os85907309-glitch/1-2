@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #score {
+            background-color: rgb(200, 200, 200);
+            border: none;
+            /* 테두리를 없애라 */
+            border-bottom: 1px dotted rgb(10, 10, 10);
+            /*밑에 선*/
+        }
+    </style>
+</head>
+
+<body>
+    <h1>성적확인</h1>
+    <!--90이상 100이하면 A-->
+    <input type="text" name="" id="score" value="">
+    <button id="check">성적확인</button>
+    <div id="print">786</div>
+</body>
+
+</html>
+<script>
+    
+    document.getElementById('check').onclick = function () {
+        const num = document.getElementById('score').value;
+        if (num >= 90) {
+            document.getElementById('print').textContent = "A학점";
+            console.log('A학점');
+        } else if (num >= 80) {
+            document.getElementById('print').textContent = "B학점";
+            console.log('B학점');
+        } else {
+            document.getElementById('print').textContent = "C학점";
+            console.log('C학점');
+        }
+    }
+</script>

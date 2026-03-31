@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>카페</h1>
+    <button id="cano">아메리카노</button>
+    <button id="latte">카페라떼</button>
+    <button id="mal">말차라떼</button>
+    <button id="ice">아이스타</button>
+    <div id="divcano"></div>
+    <div id="divlatte"></div>
+    <div id="divmal"></div>
+    <div id="divice"></div>
+</body>
+</html>
+<script>
+    let cano = 0;
+    document.getElementById('cano').onclick = function () {
+        cano++;
+        document.getElementById('divcano').textContent = '아메리카노 '+cano+' 개입니다.'
+    }
+    let latte = 0;
+    document.getElementById('latte').onclick = function () {
+        latte++;
+        document.getElementById('divlatte').textContent = '카페라떼 '+latte+' 개입니다.'
+    }
+    let mal = 0;
+    document.getElementById('mal').onclick = function () {
+        mal++;
+        document.getElementById('divmal').textContent = '말차라뗴 '+mal+' 개입니다.'
+    }
+    let ice = 0;
+    document.getElementById('ice').onclick = function () {
+        ice++;
+        document.getElementById('divice').textContent = '아이스타 '+ice+' 개입니다.'
+    }
+</script>
