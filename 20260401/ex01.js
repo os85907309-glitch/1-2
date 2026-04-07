@@ -7,7 +7,7 @@ const server = http.createServer((req, res) => {
     //응답에서 문저열이 날아간다는 설정
     res.setHeader('Content-Type', 'text/plain');
     //문자열 Hello World 전송설정
-    res.end('gotcha!\n');
+    res.end('Hello, World!\n');
 });
 
 // 서버가 3000 port를 사용해서 실행되어지고 있다는 설정
