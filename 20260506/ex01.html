@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Nanum+Gothic&family=Nanum+Pen+Script&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Supermercado+One&display=swap" rel="stylesheet">
+    <style>
+        *{ 
+            font-family: "Black Han Sans",Arial, Helvetica, sans-serif;
+            font-weight: 200;
+            margin: 0; padding: 0; box-sizing: border-box;}
+        header{
+            background-color: rgb(240,240,240);
+            width:1200px;
+            margin: 0 auto;
+            padding: 20px;
+            /* padding: 50px;  */
+        }
+        nav{
+            display: flex;
+            justify-content: space-between;
+        }
+        nav ul{
+        display: flex;
+        }
+        nav ul li{
+            list-style: none;
+            /* padding: 15px 25px; */
+        }
+        nav ul li a{
+            padding: 15px 25px;
+            line-height: 45px;
+            text-decoration: none;
+            margin-left: 30px;
+            color: black;
+            font-size: 25px;
+        }
+        nav ul li a:hover{
+            color: rgb(100, 100, 100);
+            text-shadow: 5px 5px 10px rgba(100,100,100);
+        }
+        .hi{
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .slidee-item{
+        height: 450px;
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        }
+        .item1{color: white;background-color: rgb(100, 220, 200);}
+        .item2{color: white;background-color: rgb(100, 220, 200);}
+        .item3{color: white;background-color: rgb(100, 220, 200);}
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div>
+                <h1>Logo</h1>
+            </div>
+            <ul> 
+                <li><a href="">Home</a></li>
+                <li><a href="">About</a></li>
+                <li><a href="">Services</a></li>
+                <li><a href="">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section style="width: 100%;overflow: hidden;">
+        <div class="slider">
+            <div class="slide-item item1"><h2>Welcome to Our Site</h2></div>
+            <div class="slide-item item2"><h2>Full-Stack Development</h2></div>
+            <div class="slide-item item3"><h2>Modern Design Concept</h2></div>
+        </div>
+    </section>
+    <section class="hi">
+        <h1>welcome to our website</h1>
+        <p>간단한 메인 화면 구성 예시입니다. HTML과 CSS, 그리고 jQuery 플러그인을 활용했습니다.</p>
+    </section>
+    <footer style="text-align: center;">
+        <h1>Contact</h1>
+        <h2>copyright © 2023 Your Company. All rights reserved.</h2>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="script2.js"></script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>snack raffle</title>
+    <style>
+        body {
+            background-color: rgb(245, 245, 245);
+            font-family: "Noto Sans KR", sans-serif;
+        }
+
+        h1 {
+            color: rgb(50, 80, 160);
+        }
+
+        .wrap {
+            width: 600px;
+            background-color: rgb(255, 255, 255);
+            margin: 30px auto;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .menu_box {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: rgb(235, 242, 255);
+            border-radius: 10px;
+        }
+
+        .menu_box li {
+            margin-bottom: 8px;
+        }
+
+        .menu_event {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: rgb(255, 241, 210);
+            border-radius: 10px;
+        }
+
+        input {
+            width: 400px;
+            height: 34px;
+        }
+
+        button {
+            height: 38px;
+            background-color: rgb(50, 80, 160);
+            color: white;
+            border: none;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <h1>Introduction to our class snacks and raffle</h1>
+        <p>This is a web page where you introduce snacks you want to eat with your friends and hold a raffle.</p>
+
+        <img src="snackbar-hero.png">
+        <div class="menu_box">
+            <h2>popularity Snack</h2>
+            <ul id="menu_list">
+                <!-- <li>asdf</li>javascript li 추가하기-->
+            </ul>
+        </div>
+        <div class="menu_box">
+            <h2>Snack add</h2>
+            <input type="text" placeholder="Enter a new snack" id="Input_snack">
+            <button id="btn_add">Add Snack</button>
+        </div>
+        <div class="menu_box">
+            <h2>Raffle</h2>
+            <p id="print">push the button to draaw a raffle</p>
+            <button id="btn_random">Draw Raffle</button>
+
+        </div>
+    </div>
+    <script>
+        const snacks = ["cheese toast", "chocolate cookie", "strawberry iades"];
+
+        function addSnack() {
+            const newSnack = document.getElementById('Input_snack').value;
+            snacks.push(newSnack);
+            renderSnack(newSnack);
+        };
+        const renderSnack = function (snack) {
+            const li1 = document.createElement('li');
+            li1.textContent = snack;
+            document.getElementById('menu_list').appendChild(li1);
+        };
+        for (let i = 0; i < snacks.length; i++) {
+            renderSnack(snacks[i]);
+        };
+        document.getElementById('btn_add').onclick = function () {
+            const snack = document.getElementById('Input_snack').value;
+            if (!snack) {
+                alert('Please enter a name of snack');
+            } else {
+                snacks.push(snack);
+                renderSnack(snack);
+                document.getElementById('Input_snack').value = '';
+            };
+        };
+
+        document.getElementById("btn_random").onclick = function () {
+            const radomNumber = Math.floor(Math.random() * snacks.length);
+            document.getElementById('print').textContent =
+                `Tday's snack is ${snacks[radomNumber]}`;
+        };
+    </script>
+</body>
+
+</html>

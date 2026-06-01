@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div{
+            margin-left: 0;
+            /* margin-top: 0; */
+            top: 100px;
+            left: 0;
+            width: 100px;
+            height: 100px;
+            background-color: antiquewhite;
+        }
+    </style>
+</head>
+<body>
+    <div id="mdiv"></div>
+    <div id="ndiv"></div>
+</body>
+</html>
+<script>
+    let count = 0;
+    let y = 0;
+    let x = 0;
+    window.addEventListener('keyup', function(){
+        concole.log('keyup', e.keyup);
+        if(e.key == 'ArrowUp'){
+            console.log('test');
+            //ndiv.style.marginTop = `${y}px`;
+            y -= 30;
+            ndiv.style.top = `${y}px`;
+        }else if(e.key == 'ArrowDown'){
+            y += 30;
+            ndiv.style.top = `${y}px`;
+        }
+        else if(e.key == 'ArrowRight'){
+            x += 30;
+            ndiv.style.left = `${x}px`;
+        }
+        else if(e.key == 'ArrowLeft'){
+            x -= 30;
+            ndiv.style.left = `${x}px`;
+        }
+    })
+    function move(){
+        mdiv.style.width = '300px';
+        mdiv.style.marginLeft = '300px';
+    }
+    setTimeout(move, 3000);
+    function moving(){
+        ndiv.style.marginLeft = `${count}px`;
+    }
+    setInterval(moving, 100);
+</script>

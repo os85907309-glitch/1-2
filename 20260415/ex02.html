@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="mdiv">
+        <h1>마우스이벤트</h1>
+        <script>
+            function mdown(){
+                console.log("mdown");
+            }
+            function mup(){
+                console.log("mup");
+            }
+            mdiv.addEventListener('mousedown', mdown);
+            mdiv.addEventListener("mup",mup);
+        </script>
+    </div>
+</body>
+</html>

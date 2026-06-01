@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+    <h1 onclick="alert('클릭');" id="h1">마우스 이벤트</h1>
+    <input type="button" id="btnclick" value="버튼" />
+        <script>
+        hi.addEventListener('click', function(event) { 
+            console.log(event.type);
+            console.log(event.currentTarget);
+            console.log(event.clientX);
+            console.log(event.clientY);
+            console.log(this);
+        })
+        </script>
+            <script>
+        btnclick.addEventListener('click', function(){
+            console.log(this);
+            console.log(this.value);
+            console.log('click');
+            btnclick.removeEvenListener('click',)
+        });
+        function two() {
+            console.log('two click');
+            // click 했을때, two 이벤트 함수 삭제
+            btnclick.removeEvenListener('click',)
+        }
+        btnclick.addEventListener('click','two');
+            </script>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis quisquam consequuntur ab et mollitia error accusantium harum debitis, eveniet nulla ex in amet. Voluptatem nobis maxime ea odio! At, pariatur?</p>
+    <script>
+        const mouseOutFn = function(){
+            console.log('마우스 들어왔어');
+        }
+        const mouseOverFn = function(){
+            console.log('마우스 나갔어');
+        }
+        document.getElementById('pp').onmouseout = mouseOutFn;
+        document.getElementById('pp').onmouseover = mouseOverFn;
+    </script>
+    </div>
+</body>
+</html>
