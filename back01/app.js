@@ -11,9 +11,9 @@ const conn = mysql.createConnection({
 
 conn.connect((err) => {
     if (err) {
-        console.error("디비 연결 실패");
+        console.error("divi connect failed");
     }
-    console.log("디비 연결 성공");
+    console.log("devi connect success");
 });
 
 // 미들웨어 설정: HTTP 요청의 본문(body)에 있는 JSON 데이터를 파싱하기 위함
@@ -35,5 +35,5 @@ app.post("/addusers", (req, res) => {
 
 // 서버 실행
 app.listen(PORT, () => {
-    console.log(`서버가 http://localhost:${PORT} 에서 실행 중입니다.`);
+    console.log(`sever is running http://localhost:${PORT}.`);
 });
