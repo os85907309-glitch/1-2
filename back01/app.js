@@ -1,13 +1,9 @@
 //ez=xpress 웹 서버 모듈
 const express = require('express');
-//mysal 연결모둘
+//mysql 연결모듈
 const mysql = require('mysql2/promise');
-//paht 관리하는 모듈
-// const path = require("path");
-// 
-// console.log(__dirname);
-// // console.log(path.dirname(__dirname,"test.html"));
-// 
+const path = require('path');
+
 const app = express();
 const PORT = 3000;
 
@@ -26,7 +22,7 @@ const pool = mysql.createPool({
 });
 
 // 미들웨어 설정: HTTP 요청의 본문(body)에 있는 JSON 데이터를 파싱하기 위함
-// app.use(express.json());
+app.use(express.json());
 // 임시 데이터베이스 (메모리 배열)
 let users = [
     { id: 1, name: '홍길동', email: 'hong@example.com' },
@@ -34,26 +30,25 @@ let users = [
 ];
 
 
-app.get("/", (ren, res) => {
+app.get("/", (req, res) => {
     res.send("main page");
 });
 
-app.get("/test", (reg, res) => {
-    res.sendFile(__dirname , "test.html");
+app.get("/test", (req, res) => {
+    res.sendFile(path.join(__dirname, "test.html"));
 });
 
 //req 요청 데이터 들어간다. //res.send() -> 문자열 보내기 //res.json()-> json 변수안에 값 보내기
 
 app.get("/users", async (req, res) => {
     console.log(req.ip + " who is asking with backend");
-    res.status(200).json(users);
     try {
-        const [rows] = await pool.query('select * from users');
+        const [rows] = await pool.query('SELECT * FROM users');
         console.log(rows);
-        res.json(rows);
+        res.status(200).json(rows);
     } catch (e) {
         console.log(e);
-        res.json({ 'msg': 'error warning' + e });
+        res.status(500).json({ msg: 'error warning', error: e.message || e });
     }
 });
 
@@ -65,5 +60,5 @@ app.post("/addusers", (req, res) => {
 
 // 서버 실행
 app.listen(PORT, () => {
-    console.log(`server's running http://localhost:${PORT}.`);
+    console.log(`server is running http://localhost:${PORT}.`);
 });
