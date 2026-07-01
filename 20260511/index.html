@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>간식 추첨</title>
+        <title>Exercise Recommender</title>
         <style>
             body {
                 background-color: rgb(245, 245, 245);
@@ -66,33 +66,34 @@
     </head>
     <body>
         <div class="wrap">
-            <h1>우리 반 간식 소개 & 추첨</h1>
-            <p>친구들과 먹고 싶은 간식을 소개하고 추첨하는 웹 페이지입니다.</p>
+            <h1>Our class recommendation & introduction</h1>
+            <p>This is a simple web page for recommending and introducing exercises.</p>
             <!-- ./  -> 현재 해당 파일이 있는 폴더 -->
             <!-- ../ -> 현재 해당 파일이 있는 폴더 기준 한 단계 상위 폴더 -->
             <!-- /   -> 서버/웹서버/도메인의 루트 -->
-            <img src="snackbar-hero.png" alt="간식 사진" />
+            <img src="snackbar-hero.png" alt="exercise picture" />
             <div class="menu_box">
-                <h2>인기 간식</h2>
+                <h2>populary exercises</h2>
                 <ul id="menu_list"></ul>
             </div>
             <div class="menu_box">
-                <h2>간식 추가하기</h2>
+                <h2>add exercise</h2>
                 <input
                     id="input_snack"
                     type="text"
-                    placeholder="추가할 간식 이름"
+                    placeholder="recommend an exercise"
                 />
-                <button id="btn_add">추가</button>
+                <button id="btn_add">add</button>
             </div>
             <div class="event_box">
-                <h2>오늘의 간식</h2>
-                <p id="event_result">버튼을 누르면 간식이 추첨됩니다.</p>
-                <button id="btn_event">간식 추첨</button>
+                <h2>Today's Exercise</h2>
+                <p id="event_result">Press the button to pick an exercise.</p>
+                <p id="exercise_tip">Here's a tip for your exercise!</p>
+                <button id="btn_event">Pick Exercise</button>
             </div>
         </div>
         <script>
-            let snacks = ["치즈 토스트", "딸기 에이드", "초코 쿠키"];
+            let exercises = ["jumping jacks", "push-ups", "squats"];
 
             const getRandomNumber = function (n) {
                 // return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -100,30 +101,43 @@
             };
 
             document.getElementById("btn_event").onclick = function () {
-                const num = getRandomNumber(snacks.length);
+                const num = getRandomNumber(exercises.length);
                 document.getElementById("event_result").textContent =
-                    `오늘의 간식은 ${snacks[num]}입니다!`;
+                    `today's exercise ${exercises[num]}!`;
+                    let tipMessage = "";
+                const selectedExercise = exercises[num];
+                if (selectedExercise === "Squats") {
+                    tipMessage = "무릎이 발끝을 나가지 않도록 주의하고, 둔근에 자극을 느끼세요!";
+                } else if (selectedExercise === "Push-ups") {
+                    tipMessage = "엉덩이가 아래로 처지거나 위로 솟지 않도록 일직선을 유지하세요!";
+                } else if (selectedExercise === "Jumping Jacks") {
+                    tipMessage = "앞발의 뒤꿈치에 힘을 주며 수직으로 내려가세요!";
+                } else {
+                    tipMessage = "부상에 방지하기 위해 운동 전 충분한 스트레칭을 해주세요.";
+                }
+                // DOM을 통해 화면에 팁 반영하기
+                document.getElementById("exercise_tip").textContent = tipMessage;
             };
 
-            const renderSnack = function (snack) {
-                // 입력받은 간식 이름을 ul 내에 li로 추가한다.
+            const renderexercise = function (exercise) {
+                // 입력받은 운동 이름을 ul 내에 li로 추가한다.
                 const li = document.createElement("li");
-                li.textContent = snack;
+                li.textContent = exercise;
                 document.getElementById("menu_list").appendChild(li);
             };
 
-            const addSnack = function (snack) {
+            const addExercise = function (exercise) {
                 // 1. 입력받은 이름이 비어있으면 false,
-                // 2. 그렇지 않으면 snacks 배열에 추가 후 true 반환
-                if (snack) {
-                    snacks.push(snack);
+                // 2. 그렇지 않으면 exercises 배열에 추가 후 true 반환
+                if (exercise) {
+                    exercises.push(exercise);
                     return true;
                 }
                 return false;
             };
 
-            for (let i = 0; i < snacks.length; i++) {
-                renderSnack(snacks[i]);
+            for (let i = 0; i < exercises.length; i++) {
+                renderexercise(exercises[i]);
             }
 
             document.getElementById("btn_add").onclick = function () {
@@ -132,12 +146,12 @@
                 //  2-1. 비었다면 안내 후 종료
                 // 3. 비어있지 않다면, 배열에 추가
                 // 4. 목록에 렌더링
-                const snack = document.getElementById("input_snack").value;
-                if (addSnack(snack)) {
-                    renderSnack(snack);
+                const exercise = document.getElementById("input_snack").value;
+                if (addExercise(exercise)) {
+                    renderexercise(exercise);
                 } else {
-                    alert("간식 이름을 입력해주세요.");
-                }
+                    alert("Enter the exercise name!");
+                };
             };
         </script>
     </body>

@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PulseBlue - 스마트 운동 리커멘더</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* 1. 디자인 베이스: 뇌를 편안하게 하는 딥블루 & 일렉트릭 블루 테마 */
+        :root {
+            --bg-color: #0f172a;
+            /* 깊은 네이비 (뇌파 안정) */
+            --card-color: #1e293b;
+            /* 부드러운 카드 배경 */
+            --point-blue: #38bdf8;
+            /* 일렉트릭 블루 (강조/활력) */
+            --point-purple: #818cf8;
+            /* 로드맵 그라데이션용 */
+            --text-main: #f8fafc;
+            /* 메인 글자색 */
+            --text-sub: #94a3b8;
+            /* 서브 글자색 */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Pretendard', sans-serif;
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* 앱 컨테이너 */
+        .app-wrap {
+            width: 100%;
+            max-width: 480px;
+            background-color: var(--card-color);
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(56, 189, 248, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        h1 {
+            color: var(--point-blue);
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .subtitle {
+            color: var(--text-sub);
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        /* 섹션 공통 스타일 */
+        .section-box {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        h2 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--point-blue);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* --- [기능 1] 스마트 출석체크 UI --- */
+        .attendance-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            text-align: center;
+        }
+
+        .day-badge {
+            background: #334155;
+            padding: 10px 5px;
+            border-radius: 10px;
+            font-size: 12px;
+            color: var(--text-sub);
+            transition: all 0.3s ease;
+        }
+
+        .day-badge.active {
+            background: linear-gradient(135deg, #0284c7, #4f46e5);
+            color: #fff;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(56, 189, 248, 0.3);
+        }
+
+        /* --- [기능 2] 윗몸일으키기 로드맵 & 게이지 UI --- */
+        .counter-area {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .count-display {
+            font-size: 32px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .count-display span {
+            color: var(--point-blue);
+        }
+
+        /* 게이지 바 */
+        .gauge-container {
+            width: 100%;
+            height: 12px;
+            background: #334155;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .gauge-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--point-blue), var(--point-purple));
+            border-radius: 6px;
+            transition: width 0.3s ease;
+        }
+
+        /* 마일스톤 플래그 */
+        .milestones {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-sub);
+        }
+
+        .milestone-node.reached {
+            color: var(--point-blue);
+            font-weight: bold;
+        }
+
+        /* 원래 코드 기능: 운동 목록 및 추가 */
+        .menu_box ul {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        .menu_box li {
+            font-size: 14px;
+            margin-bottom: 6px;
+            color: #cbd5e1;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .menu_box li::before {
+            content: "•";
+            color: var(--point-blue);
+            font-weight: bold;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        input {
+            flex: 1;
+            background: #334155;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 0 12px;
+            height: 40px;
+            color: #fff;
+            font-family: inherit;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--point-blue);
+        }
+
+        /* 버튼 공통 스타일 */
+        button {
+            height: 40px;
+            padding: 0 16px;
+            background: linear-gradient(135deg, var(--point-blue), #0284c7);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: inherit;
+            transition: all 0.2s ease;
+        }
+
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-action {
+            width: 100%;
+            height: 46px;
+            font-size: 15px;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            /* 운동 시작/버튼은 초록 계열 활력 */
+        }
+
+        /* 오늘의 운동 팝업 텍스트 */
+        #event_result {
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 15px;
+        }
+
+        #exercise_tip {
+            font-size: 13px;
+            color: var(--text-sub);
+            line-height: 1.4;
+        }
+
+        /* --- [기능 3] 달성 축하 팝업 모달 UI --- */
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .modal-content {
+            background: #1e293b;
+            border: 2px solid var(--point-blue);
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+            width: 85%;
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.4);
+            animation: popUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popUp {
+            from {
+                transform: scale(0.7);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-content i {
+            font-size: 48px;
+            color: #eab308;
+            margin-bottom: 16px;
+        }
+
+        .modal-content h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        /* --- [기능 4] 화면 폭죽 효과용 스타일 --- */
+        .confetti {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: #f00;
+            opacity: 0.8;
+            border-radius: 50%;
+            z-index: 11;
+            pointer-events: none;
+            animation: fanning 1s ease-out forwards;
+        }
+
+        @keyframes fanning {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(var(--x), var(--y)) rotate(360deg) scale(0.5);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app-wrap" id="appContainer">
+
+        <h1><i class="fa-solid fa-wave-square"></i> PulseBlue</h1>
+        <div class="subtitle">뇌가 맑아지는 블루 모드 피트니스 플래너</div>
+
+        <div class="section-box">
+            <h2><i class="fa-solid fa-calendar-check"></i> 5일 연속 출석 챌린지</h2>
+            <div class="attendance-grid">
+                <div class="day-badge active" id="day1">1일차</div>
+                <div class="day-badge" id="day2">2일차</div>
+                <div class="day-badge" id="day3">3일차</div>
+                <div class="day-badge" id="day4">4일차</div>
+                <div class="day-badge" id="day5">5일차</div>
+            </div>
+            <button style="margin-top:12px; width:100%; height:32px; font-size:12px;" onclick="checkAttendance()">오늘의 출석
+                도장 찍기</button>
+        </div>
+
+        <div class="section-box">
+            <h2><i class="fa-solid fa-route"></i> 윗몸 일으키기 마일스톤</h2>
+            <div class="counter-area">
+                <span class="count-display"><span id="currentCount">0</span> / 30 회</span>
+                <button onclick="doSitUp()"><i class="fa-solid fa-plus"></i> 1회 하기</button>
+            </div>
+            <div class="gauge-container">
+                <div class="gauge-bar" id="gaugeBar"></div>
+            </div>
+            <div class="milestones">
+                <span class="milestone-node" id="ms10">Lv.1 (10회)</span>
+                <span class="milestone-node" id="ms20">Lv.2 (20회)</span>
+                <span class="milestone-node" id="ms30">Lv.3 (30회)</span>
+            </div>
+        </div>
+
+        <div class="section-box menu_box">
+            <h2><i class="fa-solid fa-fire"></i> 현재 인기 있는 운동</h2>
+            <ul id="menu_list"></ul>
+
+            <div class="input-group">
+                <input id="input_snack" type="text" placeholder="나만의 추천 운동 입력..." />
+                <button id="btn_add">추가</button>
+            </div>
+        </div>
+
+        <div class="section-box">
+            <h2><i class="fa-solid fa-dice"></i> 랜덤 운동 추천 스파크</h2>
+            <p id="event_result" style="color: var(--text-sub);">버튼을 눌러 오늘 할 운동을 뽑아보세요!</p>
+            <p id="exercise_tip"></p>
+            <button id="btn_event" class="btn-action" style="margin-top: 12px;">오늘의 운동 추천받기</button>
+        </div>
+
+        <div class="modal-overlay" id="rewardModal">
+            <div class="modal-content">
+                <i class="fa-solid fa-trophy"></i>
+                <h3 id="modalTitle">목표 달성!</h3>
+                <p id="modalDesc" style="color: var(--text-sub); font-size: 14px; margin-bottom: 20px;">꾸준한 노력이 멋진 결과를
+                    만듭니다.</p>
+                <button onclick="closeModal()">계속해서 운동하기</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- 기본 데이터 설정 ---
+        let exercises = ["jumping jacks", "push-ups", "squats", "sit-ups"];
+        let sitUpCount = 0;
+        let currentDay = 1;
+
+        // --- 기능 1: 출석체크 로직 ---
+        function checkAttendance() {
+            if (currentDay <= 5) {
+                document.getElementById(`day${currentDay}`).classList.add('active');
+                createFireworkExplosion(); // 출석 축하 작은 폭죽!
+                if (currentDay < 5) currentDay++;
+            }
+        }
+
+        // --- 기능 2 & 4: 윗몸일으키기 카운트, 게이지 및 폭죽 연출 ---
+        function doSitUp() {
+            if (sitUpCount >= 30) {
+                alert("오늘 완벽히 마스터하셨습니다! 내일 또 도전하세요.");
+                return;
+            }
+
+            sitUpCount++;
+            document.getElementById("currentCount").textContent = sitUpCount;
+
+            // 게이지 바 계산 및 부드러운 반영
+            let progressPercentage = (sitUpCount / 30) * 100;
+            document.getElementById("gaugeBar").style.width = `${progressPercentage}%`;
+
+            // 각 단계(10, 20, 30) 도달 시 이벤트 체크
+            if (sitUpCount === 10) {
+                document.getElementById("ms10").classList.add("reached");
+                openRewardModal("Level 1 달성!", "10회를 완료하셨습니다. 몸이 예열되기 시작했어요! 🔥");
+                createFireworkExplosion();
+            } else if (sitUpCount === 20) {
+                document.getElementById("ms20").classList.add("reached");
+                openRewardModal("Level 2 달성!", "20회 완료! 근육이 펌핑되고 집중력이 정점에 달합니다! ⚡");
+                createFireworkExplosion();
+                createFireworkExplosion(); // 20개는 폭죽 두 배!
+            } else if (sitUpCount === 30) {
+                document.getElementById("ms30").classList.add("reached");
+                openRewardModal("👑 마스터 레벨 달성!", "최종 목표 30회를 모두 달성하셨습니다! 당신의 뇌와 몸이 완전히 깨어났습니다!");
+                // 30개 최종 달성은 연속으로 화려하게 폭죽 터뜨리기!
+                for (let i = 0; i < 5; i++) {
+                    setTimeout(createFireworkExplosion, i * 200);
+                }
+            }
+        }
+
+        // --- 기능 3: 달성 팝업창(모달) 열기/닫기 ---
+        function openRewardModal(title, description) {
+            document.getElementById("modalTitle").textContent = title;
+            document.getElementById("modalDesc").textContent = description;
+            document.getElementById("rewardModal").style.display = "flex";
+        }
+
+        function closeModal() {
+            document.getElementById("rewardModal").style.display = "none";
+        }
+
+        // --- 기능 4: 순수 자바스크립트 폭죽(Confetti) 엔진 ---
+        function createFireworkExplosion() {
+            const container = document.getElementById("appContainer");
+            const colors = ['#38bdf8', '#818cf8', '#34d399', '#fbbf24', '#f43f5e'];
+
+            // 컨테이너 중앙 부근에서 사방으로 퍼지도록 좌표 설정
+            for (let i = 0; i < 40; i++) {
+                const confetti = document.createElement("div");
+                confetti.classList.add("confetti");
+
+                // 무작위 색상 및 크기 선별
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = `50%`;
+                confetti.style.top = `50%`;
+
+                // CSS 커스텀 변수로 폭죽이 퍼질 무작위 x, y 거리 지정
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * 150 + 50;
+                const x = Math.cos(angle) * distance;
+                const y = Math.sin(angle) * distance;
+
+                confetti.style.setProperty('--x', `${x}px`);
+                confetti.style.setProperty('--y', `${y}px`);
+
+                container.appendChild(confetti);
+
+                // 애니메이션 끝난 후 메모리 관리를 위해 요소 자동 삭제
+                setTimeout(() => {
+                    confetti.remove();
+                }, 1000);
+            }
+        }
+
+        // --- 기존 기능: 랜덤 추천 및 리스트 등록 (대소문자 개선 버전) ---
+        const getRandomNumber = function (n) {
+            return Math.floor(Math.random() * n);
+        };
+
+        document.getElementById("btn_event").onclick = function () {
+            const num = getRandomNumber(exercises.length);
+            const selectedExercise = exercises[num];
+
+            document.getElementById("event_result").innerHTML = `오늘 점지된 스파크 운동은? <br><b style="color:#fff; font-size:18px;">[ ${selectedExercise.toUpperCase()} ]</b> 입니다!`;
+
+            let tipMessage = "";
+            switch (selectedExercise.toLowerCase()) {
+                case "squats":
+                    tipMessage = "💡 무릎이 발끝을 나가지 않도록 주의하고, 둔근(엉덩이)에 자극을 느끼세요!";
+                    break;
+                case "push-ups":
+                    tipMessage = "💡 코어에 힘을 주어 엉덩이가 아래로 처지거나 위로 솟지 않게 일직선을 유지하세요!";
+                    break;
+                case "jumping jacks":
+                    tipMessage = "💡 무릎 관절에 무리가 가지 않도록 앞발 뒤꿈치를 가볍게 쓰며 부드럽게 착지하세요!";
+                    break;
+                case "sit-ups":
+                    tipMessage = "💡 목을 과도하게 당기지 말고, 복부(코어)의 압박감으로 상체를 일으키세요!";
+                    break;
+                default:
+                    tipMessage = "💡 부상을 방지하기 위해 운동을 시작하기 전 목, 손목, 발목 스트레칭을 충분히 해주세요.";
+            }
+            document.getElementById("exercise_tip").textContent = tipMessage;
+        };
+
+        const renderexercise = function (exercise) {
+            const li = document.createElement("li");
+            li.textContent = exercise.toUpperCase();
+            document.getElementById("menu_list").appendChild(li);
+        };
+
+        for (let i = 0; i < exercises.length; i++) {
+            renderexercise(exercises[i]);
+        }
+
+        document.getElementById("btn_add").onclick = function () {
+            const exerciseInput = document.getElementById("input_snack");
+            const exerciseValue = exerciseInput.value.trim();
+
+            if (exerciseValue) {
+                exercises.push(exerciseValue);
+                renderexercise(exerciseValue);
+                exerciseInput.value = "";
+                createFireworkExplosion(); // 추가했을 때도 기분 좋게 팡!
+            } else {
+                alert("추가할 운동 이름을 입력해주세요!");
+            }
+        };
+    </script>
+</body>
+
+</html>
